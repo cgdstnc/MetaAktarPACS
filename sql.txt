@@ -1,0 +1,99 @@
+SELECT          patient.pk, person_name.family_name, person_name.given_name, patient_id.pat_id, patient.pat_birthdate, patient.pat_sex, patient.pat_custom1
+FROM            patient INNER JOIN
+                         person_name ON patient.pat_name_fk = person_name.pk INNER JOIN
+                         patient_id ON patient.patient_id_fk = patient_id.pk
+						 
+SELECT  *
+FROM    ( 
+			SELECT    ROW_NUMBER() OVER ( ORDER BY patient.pk ) AS RowNum, 
+					patient.pk, person_name.family_name, person_name.given_name, patient_id.pat_id, patient.pat_birthdate, patient.pat_sex, patient.pat_custom1
+			FROM            patient INNER JOIN
+                         person_name ON patient.pat_name_fk = person_name.pk INNER JOIN
+                         patient_id ON patient.patient_id_fk = patient_id.pk) as RowConstrainedResult
+WHERE   RowNum >= 0
+    AND RowNum < 20
+ORDER BY RowNum
+
+
+SELECT    COUNT(*) as count
+FROM            patient INNER JOIN
+                         person_name ON patient.pat_name_fk = person_name.pk INNER JOIN
+                         patient_id ON patient.patient_id_fk = patient_id.pk
+						 
+						 
+						 
+UPDATE       patient
+SET          dicomattrs_fk = ##
+WHERE        (pk = #)						 
+##################################################################################
+
+
+SELECT        TOP (200) pk, study_date, study_time, accession_no, study_iuid, study_id
+FROM            study
+
+SELECT  *
+FROM    ( 
+			SELECT    ROW_NUMBER() OVER ( ORDER BY pk ) AS RowNum, 
+					pk, study_date, study_time, accession_no, study_iuid, study_id
+FROM            study) as RowConstrainedResult
+WHERE   RowNum >= 0
+    AND RowNum < 20
+ORDER BY RowNum
+
+
+SELECT    COUNT(*) as count
+FROM           study
+
+
+UPDATE      study
+SET			dicomattrs_fk = ##
+WHERE      (pk = #)
+##################################################################################
+
+SELECT        TOP (200) pk, modality, series_iuid, series_no
+FROM            series
+
+SELECT  *
+FROM    ( 
+			SELECT    ROW_NUMBER() OVER ( ORDER BY pk ) AS RowNum, 
+					pk, modality, series_iuid, series_no
+FROM            series) as RowConstrainedResult
+WHERE   RowNum >= 0
+    AND RowNum < 20
+ORDER BY RowNum
+
+SELECT    COUNT(*) as count
+FROM           series
+
+UPDATE      series
+SET			dicomattrs_fk = ##
+WHERE      (pk = #)
+##################################################################################
+
+SELECT        TOP (200) instance.pk, instance.sop_cuid, instance.sop_iuid, instance.inst_no, instance.num_frames, aktarim.Rows, aktarim.Columns
+FROM            instance INNER JOIN
+                         location ON instance.pk = location.instance_fk INNER JOIN
+                         aktarim ON location.pk = aktarim.location_fk
+
+SELECT  *
+FROM    ( 
+			SELECT    ROW_NUMBER() OVER ( ORDER BY instance.pk ) AS RowNum, 
+					instance.pk, instance.sop_cuid, instance.sop_iuid, instance.inst_no, instance.num_frames, aktarim.Rows, aktarim.Columns
+FROM            instance INNER JOIN
+                         location ON instance.pk = location.instance_fk INNER JOIN
+                         aktarim ON location.pk = aktarim.location_fk) as RowConstrainedResult
+WHERE   RowNum >= 0
+    AND RowNum < 20
+ORDER BY RowNum
+					
+					
+
+SELECT    COUNT(*) as count
+FROM           instance INNER JOIN
+                         location ON instance.pk = location.instance_fk INNER JOIN
+                         aktarim ON location.pk = aktarim.location_fk		
+
+
+UPDATE      instance
+SET			dicomattrs_fk = ##
+WHERE      (pk = #)
