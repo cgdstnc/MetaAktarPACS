@@ -7,9 +7,7 @@ import org.dcm4che3.data.VR;
 import org.dcm4che3.io.DicomInputStream;
 import org.dcm4che3.io.DicomOutputStream;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by Cagdas Tunca on 05.04.2017.
@@ -112,7 +110,40 @@ public class utils {
         return pk4;
     }
 
+    public static Attributes readInstanceRelatedAttributes(File file) throws IOException {
+        DicomInputStream dis = new DicomInputStream(file);
+        Attributes attrs = dis.readDataset(-1, -1);
+//        return attrs.getString(Tag.BitsAllocated);
+//        String[] ret = {attrs.getString(Tag.SOPInstanceUID), attrs.getString(Tag.BitsAllocated), attrs.getString(Tag.Rows), attrs.getString(Tag.Columns)};
+//        return ret;
 
+        Attributes instanceAttrs = new Attributes();
+        instanceAttrs.setString(Tag.SpecificCharacterSet, VR.CS, "ISO_IR 148" /*attrs.getString(Tag.SpecificCharacterSet)*/);
+        instanceAttrs.setString(Tag.SOPClassUID, VR.UI, attrs.getString(Tag.SOPClassUID));
+        instanceAttrs.setString(Tag.SOPInstanceUID, VR.UI, attrs.getString(Tag.SOPInstanceUID));
+        instanceAttrs.setInt(Tag.InstanceNumber, VR.IS, Integer.valueOf(attrs.getString(Tag.InstanceNumber)));
+        instanceAttrs.setString(Tag.NumberOfFrames, VR.IS, attrs.getString(Tag.NumberOfFrames));
+        instanceAttrs.setString(Tag.Rows, VR.US, attrs.getString(Tag.Rows));
+        instanceAttrs.setString(Tag.Columns, VR.US, attrs.getString(Tag.Columns));
+        instanceAttrs.setString(Tag.BitsAllocated, VR.US, attrs.getString(Tag.BitsAllocated));
+        return instanceAttrs;
+    }
+
+    public static String getBitsAllocated(File file) throws IOException {
+        DicomInputStream dis = new DicomInputStream(file);
+        Attributes attrs = dis.readDataset(-1, -1);
+        return attrs.getString(Tag.BitsAllocated);
+    }
+
+    //region LOG
+    public static void appendLog(String FileName,String msg) throws IOException {
+        File Log = new File(FileName);
+        FileWriter fileWriter = new FileWriter(Log,true);
+        fileWriter.append("\n" + msg);
+        fileWriter.flush();
+        fileWriter.close();
+    }
+    //endregion
     public static void main(String[] args) {
         String hex = "0x08000800435316004F524947494E414C2F5052494D4152592F2F303030310800160055491A00312E322E3834302E31303030382E352E312E342E312E312E37000800180055492000312E322E3834302E31303030382E3230313630373132303930363338373330000800230044410800323031363037313208003300544D0E003039303633382E3731373030302020001300495302003220280008004953020031202800100055530200C8052800110055530200570A28000001555302000800";
         hex = hex.replaceAll("0x", "");

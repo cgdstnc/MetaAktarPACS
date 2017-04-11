@@ -8,6 +8,11 @@ import java.sql.*;
 public class DatabaseOps {
 
     private Connection connection;
+    private String ip;
+    private String port;
+    private String dbName;
+    private String dbUser;
+    private String dbPass;
 
     public DatabaseOps(String ip, String port, String dbName, String dbUser, String dbPass) {
         try {
@@ -17,6 +22,14 @@ public class DatabaseOps {
 
             System.out.println("connected");
             this.connection = conn;
+
+            //loggingde toString icin
+            this.ip = ip;
+            this.port = port;
+            this.dbName = dbName;
+            this.dbUser = dbUser;
+            this.dbPass = dbPass;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,7 +69,7 @@ public class DatabaseOps {
                 "                         person_name ON patient.pat_name_fk = person_name.pk INNER JOIN\n" +
                 "                         patient_id ON patient.patient_id_fk = patient_id.pk) as RowConstrainedResult\n" +
                 "WHERE   RowNum >= " + start + "\n" +
-                "    AND RowNum < "+stop+"\n" +
+                "    AND RowNum < " + stop + "\n" +
                 "ORDER BY RowNum";
 
         Statement state = connection.createStatement();
@@ -163,7 +176,7 @@ public class DatabaseOps {
         String query = "SELECT  *\n" +
                 "FROM    ( \n" +
                 "\t\t\tSELECT    ROW_NUMBER() OVER ( ORDER BY instance.pk ) AS RowNum, \n" +
-                "\t\t\t\t\tinstance.pk, instance.sop_cuid, instance.sop_iuid, instance.inst_no, instance.num_frames, aktarim.Rows, aktarim.Columns\n" +
+                "\t\t\t\t\tinstance.pk, instance.sop_cuid, instance.sop_iuid, instance.inst_no, instance.num_frames, aktarim.Rows, aktarim.Columns, location.storage_path\n\n" +
                 "FROM            instance INNER JOIN\n" +
                 "                         location ON instance.pk = location.instance_fk INNER JOIN\n" +
                 "                         aktarim ON location.pk = aktarim.location_fk) as RowConstrainedResult\n" +
@@ -186,5 +199,44 @@ public class DatabaseOps {
 
     //endregion
 
+    //region DICOMATTRS ISLEMLERI
+    public int getDicomattrsAvailablePkStart() throws SQLException {
+        String query = "SELECT *\n" +
+                "  FROM  dicomattrs order by pk DESC";
+        Statement state = connection.createStatement();
+        ResultSet rs = state.executeQuery(query);
+        if (rs.next()) return (rs.getInt("pk") + 1);
+        return 0;
+    }
 
+    //endregion
+
+    //region AKTARIM TABLE ISLEMLERI
+    public void updateAktarimRow(String sop_iuid, String retrieve_aets, int bitsAllocated, int rows, int columns) throws SQLException {
+        String sql = "UPDATE       aktarim\n" +
+                "SET\n" +
+                "Rows =" + rows + ", Columns =" + columns + ",\n" +
+                "BitsAllocated =" + bitsAllocated + "\n" +
+                "FROM            aktarim INNER JOIN\n" +
+                "                         location ON aktarim.location_fk = location.pk INNER JOIN\n" +
+                "                         instance ON location.instance_fk = instance.pk\n" +
+                " where sop_iuid='" + sop_iuid + "' and retrieve_aets='" + retrieve_aets + "'";
+
+        Statement state = connection.createStatement();
+        state.execute(sql);
+    }
+    //endregion
+
+
+    @Override
+    public String toString() {
+        return "DatabaseOps{" +
+                ", ip='" + ip + '\'' +
+                ", port='" + port + '\'' +
+                ", dbName='" + dbName + '\'' +
+                ", dbUser='" + dbUser + '\'' +
+                ", dbPass='" + dbPass + '\'' +
+                "connection=" + connection +
+                '}';
+    }
 }

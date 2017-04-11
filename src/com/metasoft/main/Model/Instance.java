@@ -12,10 +12,12 @@ public class Instance {
     private Integer num_frames;
     private Integer rows;
     private Integer columns;
+    private int bitsAllocated;
+    private String storage_path;
 
     private String blob;
 
-    public Instance(Long pk, String sop_cuid, String sop_iuid, Integer inst_no, Integer num_frames, Integer rows, Integer columns) {
+    public Instance(Long pk, String sop_cuid, String sop_iuid, Integer inst_no, Integer num_frames, Integer rows, Integer columns, String storage_path) {
         this.pk = pk;
         this.sop_cuid = sop_cuid;
         this.sop_iuid = sop_iuid;
@@ -23,6 +25,8 @@ public class Instance {
         this.num_frames = num_frames;
         this.rows = rows;
         this.columns = columns;
+       // this.bitsAllocated = bitsAllocated;
+        this.storage_path = storage_path;
     }
 
     public Long getPk() {
@@ -81,6 +85,22 @@ public class Instance {
         this.columns = columns;
     }
 
+    public int getBitsAllocated() {
+        return bitsAllocated;
+    }
+
+    public void setBitsAllocated(int bitsAllocated) {
+        this.bitsAllocated = bitsAllocated;
+    }
+
+    public String getStorage_path() {
+        return storage_path;
+    }
+
+    public void setStorage_path(String storage_path) {
+        this.storage_path = storage_path;
+    }
+
     public String getBlob() {
         return blob;
     }
@@ -99,6 +119,8 @@ public class Instance {
                 ", num_frames=" + num_frames +
                 ", rows=" + rows +
                 ", columns=" + columns +
+                ", bitsAllocated=" + bitsAllocated +
+                ", storage_path='" + storage_path + '\'' +
                 ", blob='" + blob + '\'' +
                 '}';
     }

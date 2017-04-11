@@ -1,4 +1,4 @@
-package com.metasoft.main;
+package com.metasoft.main.Aktarici;
 
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;

@@ -78,7 +78,7 @@ FROM            instance INNER JOIN
 SELECT  *
 FROM    ( 
 			SELECT    ROW_NUMBER() OVER ( ORDER BY instance.pk ) AS RowNum, 
-					instance.pk, instance.sop_cuid, instance.sop_iuid, instance.inst_no, instance.num_frames, aktarim.Rows, aktarim.Columns
+					instance.pk, instance.sop_cuid, instance.sop_iuid, instance.inst_no, instance.num_frames, aktarim.Rows, aktarim.Columns, location.storage_path
 FROM            instance INNER JOIN
                          location ON instance.pk = location.instance_fk INNER JOIN
                          aktarim ON location.pk = aktarim.location_fk) as RowConstrainedResult
@@ -97,3 +97,18 @@ FROM           instance INNER JOIN
 UPDATE      instance
 SET			dicomattrs_fk = ##
 WHERE      (pk = #)
+
+
+
+##################################################################################
+#############################FILE WALKER UPDATE###################################
+UPDATE       aktarim
+SET
+--Rows =####, Columns =####,
+-- BitsAllocated =#
+FROM            aktarim INNER JOIN
+                         location ON aktarim.location_fk = location.pk INNER JOIN
+                         instance ON location.instance_fk = instance.pk
+ where sop_iuid='%%%%' and retrieve_aets='%%%%'
+
+
