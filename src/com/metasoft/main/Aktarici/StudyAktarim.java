@@ -42,6 +42,7 @@ public class StudyAktarim {
             int studyCount = db.getStudyTableCount();
             for (int i = pagerStart; i < studyCount; i += pagerSize) {
                 try {
+                    System.out.println("Study " + i + "-" + (i + pagerSize));
                     ResultSet rs = db.getStudyTable(i, i + pagerSize);
                     LinkedList<Study> studies = new LinkedList<Study>();
                     while (rs.next()) {

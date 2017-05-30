@@ -13,10 +13,7 @@ import java.net.URI;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * Created by Cagdas Tunca on 10.04.2017.
@@ -96,7 +93,8 @@ public class run {
             System.out.println("Instance :"+(InstanceFinish-InstanceStart));
             System.out.println("TOPLAM   :"+(System.currentTimeMillis()-start));
             System.out.println("######################################################");
-
+            System.out.println("Cikmak icin bir tuşa basiniz.");
+            new Scanner(System.in).nextLine();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

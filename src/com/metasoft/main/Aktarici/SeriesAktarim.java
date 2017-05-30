@@ -42,6 +42,7 @@ public class SeriesAktarim {
             int seriesCount = db.getSeriesTableCount();
             for (int i = pagerStart; i < seriesCount; i += pagerSize) {
                 try {
+                    System.out.println("Series " + i + "-" +(i + pagerSize));
                     ResultSet rs = db.getSeriesTable(i, i + pagerSize);
                     LinkedList<Serie> series = new LinkedList<Serie>();
                     while (rs.next()) {

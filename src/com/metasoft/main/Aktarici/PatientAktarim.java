@@ -23,28 +23,29 @@ public class PatientAktarim {
     private String logFileName;
     private DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH_mm");
 
-    public PatientAktarim(DatabaseOps db, long dicomattrsPkStart, long pagerSize,int pagerStart) throws Throwable {
+    public PatientAktarim(DatabaseOps db, long dicomattrsPkStart, long pagerSize, int pagerStart) throws Throwable {
         this.db = db;
         this.dicomattrsPkStart = dicomattrsPkStart;
         this.pagerSize = pagerSize;
-        this.pagerStart=pagerStart;
+        this.pagerStart = pagerStart;
 
-        int availPk=db.getDicomattrsAvailablePkStart();
-        if (dicomattrsPkStart<availPk){
+        int availPk = db.getDicomattrsAvailablePkStart();
+        if (dicomattrsPkStart < availPk) {
             throw new Throwable("PatientAktarim dicomattrsPkStart uygunlugunu kontrol et en yuksek pk dan 1 fazla olmasi lazim en az.");
         }
 
 
         Date date = new Date();
-        logFileName=dateFormat.format(date)+"_PatientAktarim.log";
+        logFileName = dateFormat.format(date) + "_PatientAktarim.log";
     }
 
-    public void aktar(){
+    public void aktar() {
         try {
             int patientCount = db.getPatientTableCount();
 
             for (int i = pagerStart; i < patientCount; i += pagerSize) {
                 try {
+                    System.out.println("Patient " + i + "-" + (i + pagerSize));
                     //tabloyu paging kullanarak cek
                     ResultSet rs = db.getPatientTable(i, i + pagerSize);
                     LinkedList<Patient> patients = new LinkedList<Patient>();
@@ -58,11 +59,12 @@ public class PatientAktarim {
                         } catch (Exception e) {
                             e.printStackTrace();
                             try {
-                                utils.appendLog(logFileName,"**************************");
-                                utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+"PAGER START bu hata sirasinda su indexteydi:"+i);
-                                utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+e.getLocalizedMessage());
-                                utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+e.toString());
-                            }catch (Exception e1){}
+                                utils.appendLog(logFileName, "**************************");
+                                utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + "PAGER START bu hata sirasinda su indexteydi:" + i);
+                                utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + e.getLocalizedMessage());
+                                utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + e.toString());
+                            } catch (Exception e1) {
+                            }
                         }
                     }
                     // Listeyi dolas dicomAttrs tablosuna dicomattrsPkStart dan baslayarak ekle ve degeri arttır.
@@ -76,34 +78,37 @@ public class PatientAktarim {
                             e.printStackTrace();
                             System.err.println(patient.toString());
                             try {
-                                utils.appendLog(logFileName,"**************************");
-                                utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+"PAGER START bu hata sirasinda su indexteydi:"+i);
-                                utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+"dicomattrsPkStart bu hata sirasinda su indexteydi:"+dicomattrsPkStart);
-                                utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+patient.toString());
-                                utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+e.getLocalizedMessage());
-                                utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+e.toString());
-                            }catch (Exception e1){}
+                                utils.appendLog(logFileName, "**************************");
+                                utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + "PAGER START bu hata sirasinda su indexteydi:" + i);
+                                utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + "dicomattrsPkStart bu hata sirasinda su indexteydi:" + dicomattrsPkStart);
+                                utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + patient.toString());
+                                utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + e.getLocalizedMessage());
+                                utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + e.toString());
+                            } catch (Exception e1) {
+                            }
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                     try {
-                        utils.appendLog(logFileName,"**************************");
-                        utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+"PAGER START bu hata sirasinda su indexteydi:"+i);
-                        utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+"dicomattrsPkStart bu hata sirasinda su indexteydi:"+dicomattrsPkStart);
-                        utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+e.getLocalizedMessage());
-                        utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+e.toString());
-                    }catch (Exception e1){}
+                        utils.appendLog(logFileName, "**************************");
+                        utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + "PAGER START bu hata sirasinda su indexteydi:" + i);
+                        utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + "dicomattrsPkStart bu hata sirasinda su indexteydi:" + dicomattrsPkStart);
+                        utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + e.getLocalizedMessage());
+                        utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + e.toString());
+                    } catch (Exception e1) {
+                    }
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             try {
-                utils.appendLog(logFileName,"**************************");
-                utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+e.getLocalizedMessage());
-                utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+e.toString());
-            }catch (Exception e1){}
+                utils.appendLog(logFileName, "**************************");
+                utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + e.getLocalizedMessage());
+                utils.appendLog(logFileName, "<PatientAktarim" + dateFormat.format(new Date()) + "> " + e.toString());
+            } catch (Exception e1) {
+            }
         }
     }
 

@@ -46,6 +46,7 @@ public class InstanceAktarim {
             int instanceCount = db.getInstanceTableCount();
             for (int i = pagerStart; i < instanceCount; i += pagerSize) {
                 try {
+                    System.out.println("Instance " + i + "-" + (i + pagerSize));
                     ResultSet rs = db.getInstanceTable(i, i + pagerSize);
                     LinkedList<Instance> instances = new LinkedList<Instance>();
                     while (rs.next()) {
@@ -62,8 +63,8 @@ public class InstanceAktarim {
 //                                        String.valueOf(instance.getNum_frames().intValue()), String.valueOf(instance.getRows().intValue()),
 //                                        String.valueOf(instance.getColumns().intValue()),
 //                                        utils.getBitsAllocated(f))));
-                                System.out.println(utils.decodeAttributes(utils.hexStringToByteArray(pk4Hex.replaceAll("0x", ""))));
-                                System.out.println();
+                               // System.out.println(utils.decodeAttributes(utils.hexStringToByteArray(pk4Hex.replaceAll("0x", ""))));
+                               // System.out.println();
                                 instance.setBlob(pk4Hex);
                                 instances.add(instance);
                             } else {
