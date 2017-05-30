@@ -162,10 +162,15 @@ public class DatabaseOps {
     //region INSTANCE ATTRIBUTES BLOB ISLEMLERI
 
     public int getInstanceTableCount() throws SQLException {
+//        String query = "SELECT    COUNT(*) as count\n" +
+//                "FROM           instance INNER JOIN\n" +
+//                "                         location ON instance.pk = location.instance_fk INNER JOIN\n" +
+//                "                         aktarim ON location.pk = aktarim.location_fk";
+
         String query = "SELECT    COUNT(*) as count\n" +
                 "FROM           instance INNER JOIN\n" +
-                "                         location ON instance.pk = location.instance_fk INNER JOIN\n" +
-                "                         aktarim ON location.pk = aktarim.location_fk";
+                "                         location ON instance.pk = location.instance_fk ";
+
         Statement state = connection.createStatement();
         ResultSet rs = state.executeQuery(query);
         rs.next();
@@ -173,16 +178,27 @@ public class DatabaseOps {
     }
 
     public ResultSet getInstanceTable(long start, long stop) throws SQLException {
+//        String query = "SELECT  *\n" +
+//                "FROM    ( \n" +
+//                "\t\t\tSELECT    ROW_NUMBER() OVER ( ORDER BY instance.pk ) AS RowNum, \n" +
+//                "\t\t\t\t\tinstance.pk, instance.sop_cuid, instance.sop_iuid, instance.inst_no, instance.num_frames, aktarim.Rows, aktarim.Columns, location.storage_path\n\n" +
+//                "FROM            instance INNER JOIN\n" +
+//                "                         location ON instance.pk = location.instance_fk INNER JOIN\n" +
+//                "                         aktarim ON location.pk = aktarim.location_fk) as RowConstrainedResult\n" +
+//                "WHERE   RowNum >=" + start + "\n" +
+//                "    AND RowNum < " + stop + "\n" +
+//                "ORDER BY RowNum";
         String query = "SELECT  *\n" +
                 "FROM    ( \n" +
                 "\t\t\tSELECT    ROW_NUMBER() OVER ( ORDER BY instance.pk ) AS RowNum, \n" +
-                "\t\t\t\t\tinstance.pk, instance.sop_cuid, instance.sop_iuid, instance.inst_no, instance.num_frames, aktarim.Rows, aktarim.Columns, location.storage_path\n\n" +
+                "\t\t\t\t\tinstance.pk, instance.sop_cuid, instance.sop_iuid, instance.inst_no, instance.num_frames,location.storage_path\n" +
+                "\n" +
                 "FROM            instance INNER JOIN\n" +
-                "                         location ON instance.pk = location.instance_fk INNER JOIN\n" +
-                "                         aktarim ON location.pk = aktarim.location_fk) as RowConstrainedResult\n" +
+                "                         location ON instance.pk = location.instance_fk ) as RowConstrainedResult\n" +
                 "WHERE   RowNum >=" + start + "\n" +
                 "    AND RowNum < " + stop + "\n" +
                 "ORDER BY RowNum";
+
 
         Statement state = connection.createStatement();
         return state.executeQuery(query);

@@ -78,6 +78,7 @@ public class PatientAktarim {
                             try {
                                 utils.appendLog(logFileName,"**************************");
                                 utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+"PAGER START bu hata sirasinda su indexteydi:"+i);
+                                utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+"dicomattrsPkStart bu hata sirasinda su indexteydi:"+dicomattrsPkStart);
                                 utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+patient.toString());
                                 utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+e.getLocalizedMessage());
                                 utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+e.toString());
@@ -89,6 +90,7 @@ public class PatientAktarim {
                     try {
                         utils.appendLog(logFileName,"**************************");
                         utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+"PAGER START bu hata sirasinda su indexteydi:"+i);
+                        utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+"dicomattrsPkStart bu hata sirasinda su indexteydi:"+dicomattrsPkStart);
                         utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+e.getLocalizedMessage());
                         utils.appendLog(logFileName,"<PatientAktarim"+dateFormat.format(new Date())+"> "+e.toString());
                     }catch (Exception e1){}

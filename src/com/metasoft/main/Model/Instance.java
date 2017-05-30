@@ -17,6 +17,11 @@ public class Instance {
 
     private String blob;
 
+    public Instance(Long pk, String storage_path) {
+        this.pk = pk;
+        this.storage_path = storage_path;
+    }
+
     public Instance(Long pk, String sop_cuid, String sop_iuid, Integer inst_no, Integer num_frames, Integer rows, Integer columns, String storage_path) {
         this.pk = pk;
         this.sop_cuid = sop_cuid;

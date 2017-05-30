@@ -3,6 +3,7 @@ package com.metasoft.main.Aktarici;
 import com.metasoft.main.DatabaseOps;
 import com.metasoft.main.Model.Instance;
 import com.metasoft.main.utils;
+import org.dcm4che3.data.Attributes;
 
 import java.io.File;
 import java.sql.ResultSet;
@@ -49,24 +50,29 @@ public class InstanceAktarim {
                     LinkedList<Instance> instances = new LinkedList<Instance>();
                     while (rs.next()) {
                         try {
-                            Instance instance = new Instance(rs.getLong("pk"), rs.getString("sop_cuid"), rs.getString("sop_iuid"), rs.getInt("inst_no"), rs.getInt("num_frames"), rs.getInt("Rows"), rs.getInt("Columns"), rs.getString("storage_path"));
+                            Instance instance = new Instance(rs.getLong("pk"),rs.getString("storage_path"));
+//                                    , rs.getString("sop_cuid"), rs.getString("sop_iuid"), rs.getInt("inst_no"), rs.getInt("num_frames"), rs.getInt("Rows"), rs.getInt("Columns"), rs.getString("storage_path"));
 
                             File f = new File(baseFilePath + instance.getStorage_path().replaceAll("/", "\\\\"));
                             if (f.exists()) {
-                                String blob = "0x" + utils.bytesToHex(utils.attributesToByteArray(utils.generateFourthAttributesBlob("ISO_IR 148", instance.getSop_cuid(),
-                                        instance.getSop_iuid(), instance.getInst_no(),
-                                        String.valueOf(instance.getNum_frames().intValue()), String.valueOf(instance.getRows().intValue()),
-                                        String.valueOf(instance.getColumns().intValue()),
-                                        utils.getBitsAllocated(f))));
+                                String pk4Hex = "0x" + utils.bytesToHex(utils.attributesToByteArray(utils.readInstanceRelatedAttributes(f)));
 
-                                instance.setBlob(blob);
+//                                String blob = "0x" + utils.bytesToHex(utils.attributesToByteArray(utils.generateFourthAttributesBlob("ISO_IR 148", instance.getSop_cuid(),
+//                                        instance.getSop_iuid(), instance.getInst_no(),
+//                                        String.valueOf(instance.getNum_frames().intValue()), String.valueOf(instance.getRows().intValue()),
+//                                        String.valueOf(instance.getColumns().intValue()),
+//                                        utils.getBitsAllocated(f))));
+                                System.out.println(utils.decodeAttributes(utils.hexStringToByteArray(pk4Hex.replaceAll("0x", ""))));
+                                System.out.println();
+                                instance.setBlob(pk4Hex);
                                 instances.add(instance);
-                            }else{
+                            } else {
                                 try {
                                     utils.appendLog(logFileName, "**************************");
                                     utils.appendLog(logFileName, "<InstanceAktarim" + dateFormat.format(new Date()) + "> " + "DOSYA BULUNAMADI ->" + baseFilePath + instance.getStorage_path().replaceAll("/", "\\\\"));
                                     utils.appendLog(logFileName, "<InstanceAktarim" + dateFormat.format(new Date()) + "> " + "PAGER START bu hata sirasinda su indexteydi:" + i);
-                                }catch (Exception e){}
+                                } catch (Exception e) {
+                                }
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

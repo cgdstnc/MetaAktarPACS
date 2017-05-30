@@ -121,7 +121,7 @@ public class utils {
         instanceAttrs.setString(Tag.SpecificCharacterSet, VR.CS, "ISO_IR 148" /*attrs.getString(Tag.SpecificCharacterSet)*/);
         instanceAttrs.setString(Tag.SOPClassUID, VR.UI, attrs.getString(Tag.SOPClassUID));
         instanceAttrs.setString(Tag.SOPInstanceUID, VR.UI, attrs.getString(Tag.SOPInstanceUID));
-        instanceAttrs.setInt(Tag.InstanceNumber, VR.IS, Integer.valueOf(attrs.getString(Tag.InstanceNumber)));
+        instanceAttrs.setInt(Tag.InstanceNumber, VR.IS, 1/*Integer.valueOf(attrs.getString(Tag.InstanceNumber))*/);
         instanceAttrs.setString(Tag.NumberOfFrames, VR.IS, attrs.getString(Tag.NumberOfFrames));
         instanceAttrs.setString(Tag.Rows, VR.US, attrs.getString(Tag.Rows));
         instanceAttrs.setString(Tag.Columns, VR.US, attrs.getString(Tag.Columns));
@@ -145,8 +145,15 @@ public class utils {
     }
     //endregion
     public static void main(String[] args) {
-        String hex = "0x0800050043530A0049534F5F4952203134380800160055491A00312E322E3834302E31303030382E352E312E342E312E312E37000800180055492200312E322E3834302E31303030382E32303136303730393231353934313935322E300020001300495302003020280008004953020031202800100055530200D6012800110055530200600228000001555302000800";
+        String hex = "0x0800050043530A0049534F5F4952203134380800160055491E00312E322E3834302E31303030382E352E312E342E312E312E312E332E31000800180055493A00312E322E3234362E3531322E313030322E313434343036363036372E313239343838363038382E3137363234303337313338383033323638313920001300495302003120280008004953000028001000555302000C052800110055530200260328000001555302001000";
         hex = hex.replaceAll("0x", "");
         System.out.println(decodeAttributes(hexStringToByteArray(hex)));
+
+        String query = "SELECT    COUNT(*) as count\n" +
+                "FROM           instance INNER JOIN\n" +
+                "                         location ON instance.pk = location.instance_fk INNER JOIN\n" +
+                "                         aktarim ON location.pk = aktarim.location_fk";
+        System.out.println(query);
+
     }
 }
