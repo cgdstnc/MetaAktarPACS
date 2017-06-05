@@ -53,8 +53,8 @@ public class InstanceAktarim {
                         try {
                             Instance instance = new Instance(rs.getLong("pk"),rs.getString("storage_path"));
 //                                    , rs.getString("sop_cuid"), rs.getString("sop_iuid"), rs.getInt("inst_no"), rs.getInt("num_frames"), rs.getInt("Rows"), rs.getInt("Columns"), rs.getString("storage_path"));
-
-                            File f = new File(baseFilePath + instance.getStorage_path().replaceAll("/", "\\\\"));
+                            String sop_iuid=rs.getString("sop_iuid");
+                            File f = new File(baseFilePath+"\\" + instance.getStorage_path().replaceAll("/", "\\\\"));
                             if (f.exists()) {
                                 String pk4Hex = "0x" + utils.bytesToHex(utils.attributesToByteArray(utils.readInstanceRelatedAttributes(f)));
 
@@ -69,9 +69,11 @@ public class InstanceAktarim {
                                 instances.add(instance);
                             } else {
                                 try {
+                                    utils.appendLog("sop_iuid",sop_iuid);
                                     utils.appendLog(logFileName, "**************************");
-                                    utils.appendLog(logFileName, "<InstanceAktarim" + dateFormat.format(new Date()) + "> " + "DOSYA BULUNAMADI ->" + baseFilePath + instance.getStorage_path().replaceAll("/", "\\\\"));
+                                    utils.appendLog(logFileName, "<InstanceAktarim" + dateFormat.format(new Date()) + "> " + "DOSYA BULUNAMADI ->" + baseFilePath +"\\" + instance.getStorage_path().replaceAll("/", "\\\\"));
                                     utils.appendLog(logFileName, "<InstanceAktarim" + dateFormat.format(new Date()) + "> " + "PAGER START bu hata sirasinda su indexteydi:" + i);
+
                                 } catch (Exception e) {
                                 }
                             }

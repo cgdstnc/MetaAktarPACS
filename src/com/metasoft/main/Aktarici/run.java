@@ -32,10 +32,21 @@ public class run {
         System.out.println("long pagerSize = Long.valueOf(args[7]);");
         System.out.println("int pagerStart =Integer.valueOf(args[8]);");
         System.out.println("///Ornek");
-        System.out.println("java -jar MetaAktarPACS.jar 192.168.12.132 1433 PACSDB1 sa meta26.soft \\\\192.168.12.132\\MetapacsStorage\\ServerStudies\\ 0 20 0");
+        System.out.println("java -jar MetaAktarPACS.jar 192.168.12.132 1433 PACSDB1 sa meta26.soft \\\\192.168.12.132\\MetapacsStorage\\ServerStudies 0 20 0");
     }
 
     public static void main(String[] args) {
+//        args = new String[9];
+//        args[0]="10.26.96.5";
+//        args[1]="1433";
+//        args[2]="PACSDB2";
+//        args[3]="sa";
+//        args[4]="mtsft";
+//        args[5]="\\\\10.26.96.5\\MetapacsStorage\\ServerStudies";
+//        args[6]="0";
+//        args[7]="5000";
+//        args[8]="0";
+
         printHowToUse();
         String ip = args[0];
         String port = args[1];
@@ -72,13 +83,13 @@ public class run {
             StudyAktarim studyAktarim = new StudyAktarim(db, x, pagerSize, pagerStart);
             studyAktarim.aktar();
             long StudyFinish= System.currentTimeMillis();
-
+//
             long SeriesStart= System.currentTimeMillis();
             x = db.getDicomattrsAvailablePkStart();
             SeriesAktarim seriesAktarim = new SeriesAktarim(db, x, pagerSize, pagerStart);
             seriesAktarim.aktar();
             long SeriesFinish= System.currentTimeMillis();
-
+//
 
             long InstanceStart= System.currentTimeMillis();
             x = db.getDicomattrsAvailablePkStart();

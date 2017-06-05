@@ -51,8 +51,8 @@ public class SeriesAktarim {
                             String blob = "0x" + utils.bytesToHex(utils.attributesToByteArray(utils.generateThirdAttributesBlob("ISO_IR 148", serie.getModality(), serie.getSeries_iuid(), serie.getSeries_no())));
                             serie.setBlob(blob);
                             series.add(serie);
-                            System.out.println(utils.decodeAttributes(utils.hexStringToByteArray(blob.replaceAll("0x", ""))));
-                            System.out.println();
+//                            System.out.println(utils.decodeAttributes(utils.hexStringToByteArray(blob.replaceAll("0x", ""))));
+//                            System.out.println();
                         } catch (Exception e) {
                             e.printStackTrace();
                             try {
