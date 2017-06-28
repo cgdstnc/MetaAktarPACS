@@ -92,6 +92,7 @@ public class run {
 //
 
             long InstanceStart= System.currentTimeMillis();
+
             x = db.getDicomattrsAvailablePkStart();
             InstanceAktarim instanceAktarim = new InstanceAktarim(db, x, pagerSize, pagerStart, baseFilePath);
             instanceAktarim.aktar();

@@ -54,7 +54,17 @@ public class InstanceAktarim {
                             Instance instance = new Instance(rs.getLong("pk"),rs.getString("storage_path"));
 //                                    , rs.getString("sop_cuid"), rs.getString("sop_iuid"), rs.getInt("inst_no"), rs.getInt("num_frames"), rs.getInt("Rows"), rs.getInt("Columns"), rs.getString("storage_path"));
                             String sop_iuid=rs.getString("sop_iuid");
-                            File f = new File(baseFilePath+"\\" + instance.getStorage_path().replaceAll("/", "\\\\"));
+
+                            String storage_path=instance.getStorage_path().replaceAll("/", "\\\\");
+
+                            if (baseFilePath.endsWith("\\\\")){
+                                baseFilePath=baseFilePath.substring(0,baseFilePath.length()-2);
+                            }
+                            if (storage_path.startsWith("\\\\")){
+                                storage_path=storage_path.substring(2,storage_path.length());
+                            }
+
+                            File f = new File(baseFilePath+"\\" + storage_path/*instance.getStorage_path().replaceAll("/", "\\\\")*/);
                             if (f.exists()) {
                                 String pk4Hex = "0x" + utils.bytesToHex(utils.attributesToByteArray(utils.readInstanceRelatedAttributes(f)));
 

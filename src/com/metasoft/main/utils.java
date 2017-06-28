@@ -145,15 +145,28 @@ public class utils {
     }
     //endregion
     public static void main(String[] args) {
-        String hex = "0x0800050043530A0049534F5F4952203134380800160055491E00312E322E3834302E31303030382E352E312E342E312E312E312E332E31000800180055493A00312E322E3234362E3531322E313030322E313434343036363036372E313239343838363038382E3137363234303337313338383033323638313920001300495302003120280008004953000028001000555302000C052800110055530200260328000001555302001000";
-        hex = hex.replaceAll("0x", "");
-        System.out.println(decodeAttributes(hexStringToByteArray(hex)));
+//        String hex = "0x0800050043530A0049534F5F4952203134380800160055491E00312E322E3834302E31303030382E352E312E342E312E312E312E332E31000800180055493A00312E322E3234362E3531322E313030322E313434343036363036372E313239343838363038382E3137363234303337313338383033323638313920001300495302003120280008004953000028001000555302000C052800110055530200260328000001555302001000";
+//        hex = hex.replaceAll("0x", "");
+//        System.out.println(decodeAttributes(hexStringToByteArray(hex)));
+//
+//        String query = "SELECT    COUNT(*) as count\n" +
+//                "FROM           instance INNER JOIN\n" +
+//                "                         location ON instance.pk = location.instance_fk INNER JOIN\n" +
+//                "                         aktarim ON location.pk = aktarim.location_fk";
+//        System.out.println(query);
+        String storage_path="\\\\12345";
+        String baseFilePath="123\\\\";
+        System.out.println(baseFilePath);
+        System.out.println(storage_path);
 
-        String query = "SELECT    COUNT(*) as count\n" +
-                "FROM           instance INNER JOIN\n" +
-                "                         location ON instance.pk = location.instance_fk INNER JOIN\n" +
-                "                         aktarim ON location.pk = aktarim.location_fk";
-        System.out.println(query);
+        if (baseFilePath.endsWith("\\\\")){
+            baseFilePath=baseFilePath.substring(0,baseFilePath.length()-2);
+        }
+        if (storage_path.startsWith("\\\\")){
+            storage_path=storage_path.substring(2,storage_path.length());
+        }
 
+        System.out.println(baseFilePath);
+        System.out.println(storage_path);
     }
 }
